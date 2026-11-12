@@ -22,10 +22,15 @@ resource "aws_instance" "web_server" {
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
   associate_public_ip_address = true
 
+  # Attach IAM Instance Profile
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+
+  # Enable IMDSv2
   metadata_options {
     http_tokens = "required"
   }
 
+  # Install and start Nginx
   user_data = <<-EOF
     #!/bin/bash
     dnf update -y
