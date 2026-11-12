@@ -1,5 +1,6 @@
+# Web Server Security Group
 resource "aws_security_group" "web_sg" {
-  name        = "web-server-sg"
+  name        = "${var.project_name}-web-sg"
   description = "Allow HTTP and HTTPS traffic"
   vpc_id      = aws_vpc.main.id
 
@@ -20,6 +21,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   egress {
+    description = "Allow outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -27,6 +29,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   tags = {
-    Name = "web-server-sg"
+    Name        = "${var.project_name}-web-sg"
+    Environment = var.environment
   }
 }

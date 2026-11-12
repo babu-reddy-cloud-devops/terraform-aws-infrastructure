@@ -1,20 +1,24 @@
+# Public Subnet
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = var.public_subnet_cidr
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-subnet"
-    Type = "Public"
+    Name        = "${var.project_name}-public-subnet"
+    Environment = var.environment
+    Type        = "Public"
   }
 }
 
+# Private Subnet
 resource "aws_subnet" "private" {
   vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.2.0/24"
+  cidr_block = var.private_subnet_cidr
 
   tags = {
-    Name = "private-subnet"
-    Type = "Private"
+    Name        = "${var.project_name}-private-subnet"
+    Environment = var.environment
+    Type        = "Private"
   }
 }

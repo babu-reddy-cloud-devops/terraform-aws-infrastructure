@@ -3,7 +3,8 @@ resource "aws_eip" "nat" {
   domain = "vpc"
 
   tags = {
-    Name = "devops-nat-eip"
+    Name        = "${var.project_name}-nat-eip"
+    Environment = var.environment
   }
 }
 
@@ -13,7 +14,8 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = aws_subnet.public.id
 
   tags = {
-    Name = "devops-nat-gateway"
+    Name        = "${var.project_name}-nat-gateway"
+    Environment = var.environment
   }
 
   depends_on = [aws_internet_gateway.igw]
@@ -29,11 +31,12 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "private-route-table"
+    Name        = "${var.project_name}-private-route-table"
+    Environment = var.environment
   }
 }
 
-# Associate Private Subnet
+# Private Subnet Route Table Association
 resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_route_table.private.id

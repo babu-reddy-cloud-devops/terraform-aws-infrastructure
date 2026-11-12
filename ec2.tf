@@ -30,6 +30,11 @@ resource "aws_instance" "web_server" {
     http_tokens = "required"
   }
 
+  # Encrypt root volume
+  root_block_device {
+    encrypted = true
+  }
+
   # Install and start Nginx
   user_data = <<-EOF
     #!/bin/bash
@@ -41,7 +46,7 @@ resource "aws_instance" "web_server" {
   EOF
 
   tags = {
-    Name        = "devops-web-server"
+    Name        = "${var.project_name}-web-server"
     Environment = var.environment
   }
 }
